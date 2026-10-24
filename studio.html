@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Click Catalyst Studio — Mobile Automation</title>
+  <title>The Click Catalyst Studio — Pro Mobile</title>
   <style>
     :root { --primary: #e60023; --dark: #111111; --bg: #f4f5f7; --card: #ffffff; --border: #dcdcdc; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 12px; }
     .container { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 860px) { .container { grid-template-columns: 1fr 400px; } }
     header { max-width: 1180px; margin: 0 auto 16px auto; background: var(--card); padding: 14px 18px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .status-badge { display: inline-block; margin-top: 8px; background: #e0f2fe; color: #0369a1; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #bae6fd; }
     .card { background: var(--card); padding: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
@@ -29,9 +28,9 @@
 <body>
 
 <header>
-  <h1 style="margin:0; font-size:19px;">The Click Catalyst Studio (Mobile v2.0)</h1>
+  <h1 style="margin:0; font-size:19px;">The Click Catalyst Studio (Pro v2.1)</h1>
   <div class="small-note">Pinterest (@rrbrick123) • Store ID: rishikeshbhav-21</div>
-  <div class="status-badge">App ID: 1629028 (Trial Pending) • Mobile Studio Active</div>
+  <div class="status-badge">App ID: 1629028 (Trial Pending) • Pro Graphics Active</div>
 </header>
 
 <div class="container">
@@ -43,20 +42,20 @@
         <button class="btn btn-outline btn-small" onclick="downloadProductsJSON()">Backup JSON</button>
       </h2>
       <label for="searchBox">Search Product Name:</label>
-      <input type="text" id="searchBox" placeholder="Type 'boAt' or 'Qlect'..." oninput="filterProducts()">
+      <input type="text" id="searchBox" placeholder="Type 'boAt', 'Qlect', or 'Scrub'..." oninput="filterProducts()">
       
-      <label for="productSelect">Matched Product (<span id="prodCount">2</span> saved):</label>
+      <label for="productSelect">Matched Product (<span id="prodCount">3</span> saved):</label>
       <select id="productSelect" onchange="loadSelectedProduct()"></select>
 
       <label for="productImageUpload">Optional: Add Product Photo from Phone Gallery:</label>
       <input type="file" id="productImageUpload" accept="image/*" onchange="handleImageUpload(event)">
     </div>
 
-    <!-- LIVE PIN GRAPHIC STUDIO (Placed high for easy mobile viewing) -->
+    <!-- LIVE PIN GRAPHIC STUDIO -->
     <div class="card" style="text-align:center;">
-      <h2>2. Generated Pin Image (1000×1500 px)</h2>
+      <h2>2. Pro Generated Pin Image (1000×1500 px)</h2>
       <canvas id="pinCanvas" width="1000" height="1500"></canvas>
-      <button class="btn" onclick="downloadPinImage()">Step A: Download Pin Image (.png)</button>
+      <button class="btn" onclick="downloadPinImage()">Step A: Download Pro Pin Image (.png)</button>
       <div class="small-note">Or long-press the image above to save to your phone gallery.</div>
     </div>
 
@@ -76,7 +75,6 @@
       <textarea id="pinDesc"></textarea>
 
       <button class="btn btn-secondary" onclick="openPinterestCreator()">Step B: Copy Text & Open Pinterest</button>
-      <button class="btn btn-outline" onclick="copyLinkOnly()">Copy Affiliate Link Only</button>
       <button class="btn btn-outline" onclick="exportPinterestCSV()">Export Bulk CSV</button>
     </div>
 
@@ -88,13 +86,13 @@
       </h2>
       <div id="addProductForm" style="display:none;">
         <label>Short Display Name (for Pin Graphic):</label>
-        <input type="text" id="newShortName" placeholder="e.g. Philips Air Fryer HD9252">
+        <input type="text" id="newShortName" placeholder="e.g. DR.RASHEL De-Tan Scrub">
 
         <label>Category & Auto-Board Routing:</label>
         <select id="newCategory" onchange="autoSelectBoard()">
+          <option value="Home & Everyday">Home & Everyday (→ Other Seller Zone)</option>
           <option value="Kitchen / Small Appliances">Kitchen / Small Appliances (→ Kitchen Organisation)</option>
           <option value="Electronics / Gadgets">Electronics / Gadgets (→ Other Seller Zone)</option>
-          <option value="Home & Everyday">Home & Everyday (→ Other Seller Zone)</option>
         </select>
 
         <label>Full Amazon Product Title:</label>
@@ -104,13 +102,13 @@
         <input type="text" id="newLink" placeholder="https://link.amazon/...">
 
         <label>Target Pinterest Board:</label>
-        <input type="text" id="newBoard" value="Kitchen Organisation" readonly style="background:#f9f9f9; font-weight:bold;">
+        <input type="text" id="newBoard" value="Other Seller Zone" readonly style="background:#f9f9f9; font-weight:bold;">
 
         <label>4 Key Features (comma-separated):</label>
-        <input type="text" id="newHighlights" placeholder="Fast Charge, 40H Battery, Dual Pair, Magnetic Buds">
+        <input type="text" id="newHighlights" placeholder="Brightening, Dirt Removal, Exfoliating, Nourishing">
 
         <label>Hashtags (#ad #affiliate added automatically):</label>
-        <input type="text" id="newKeywords" placeholder="#KitchenGadgets #AmazonIndia">
+        <input type="text" id="newKeywords" placeholder="#SkincareRoutine #AmazonFinds">
 
         <button class="btn" onclick="saveNewProduct()">Save Product & Generate Pin</button>
       </div>
@@ -157,6 +155,18 @@
       accentColor: "#34d399",
       highlights: ["Powerful 6-Blade Mixing System", "3 Adjustable Speed Gears", "1500 mAh USB Rechargeable", "Portable Fresh Smoothies Anywhere"],
       keywords: "#KitchenOrganisation #PortableBlender #SmoothieMaker #KitchenHacks #AmazonKitchen #ad #affiliate"
+    },
+    {
+      id: "prod_003",
+      shortName: "DR.RASHEL De-Tan Scrub",
+      fullName: "DR.RASHEL Beauty Elixirs De-Tan Scrub for Glowing Skin - 380ml",
+      affiliateLink: "https://link.amazon/DeTanScrub",
+      category: "Home & Everyday",
+      board: "Other Seller Zone",
+      bgGradient: ["#1e1b4b", "#312e81"],
+      accentColor: "#f43f5e",
+      highlights: ["Brightening Skincare Formula", "Deep Dirt & Impurity Removal", "Gentle Exfoliating Scrub", "Nourishing Botanical Extracts"],
+      keywords: "#SkincareFinds #DeTanScrub #AmazonBeauty #BeautyEssentials #ad #affiliate"
     }
   ];
 
@@ -207,8 +217,8 @@
     const newProd = {
       id: "prod_" + String(PRODUCTS.length + 1).padStart(3, "0"),
       shortName, fullName, affiliateLink, category, board,
-      bgGradient: isKitchen ? ["#064e3b", "#047857"] : ["#0f172a", "#1e293b"],
-      accentColor: isKitchen ? "#34d399" : "#38bdf8",
+      bgGradient: isKitchen ? ["#064e3b", "#047857"] : ["#1e1b4b", "#312e81"],
+      accentColor: isKitchen ? "#34d399" : "#f43f5e",
       highlights, keywords
     };
 
@@ -219,7 +229,7 @@
     loadSelectedProduct();
     recordLog(newProd.shortName, newProd.board, "Added to DB");
     toggleAddForm();
-    alert("Saved! Your new Pin graphic is ready above.");
+    alert("Saved! Your Pro Pin graphic is ready above.");
   }
 
   function downloadProductsJSON() {
@@ -256,7 +266,7 @@
     document.getElementById("productImageUpload").value = "";
     document.getElementById("pinBoard").value = currentProduct.board;
     document.getElementById("pinLink").value = currentProduct.affiliateLink;
-    document.getElementById("pinTitle").value = `${currentProduct.shortName} — Top Features & Guide`;
+    document.getElementById("pinTitle").value = `${currentProduct.shortName} — Top Features & Review`;
     document.getElementById("pinDesc").value = `Looking for the ${currentProduct.shortName}? Check out why it stands out:\n✅ ${currentProduct.highlights.join(" • ")}\n\nTap the link to check the latest price on Amazon! ${currentProduct.keywords}`;
     renderPinCanvas();
   }
@@ -277,47 +287,67 @@
     const canvas = document.getElementById("pinCanvas");
     const ctx = canvas.getContext("2d");
     const p = currentProduct;
+
+    // Background Gradient
     const grad = ctx.createLinearGradient(0, 0, 0, 1500);
-    grad.addColorStop(0, p.bgGradient ? p.bgGradient[0] : "#0f172a");
-    grad.addColorStop(1, p.bgGradient ? p.bgGradient[1] : "#1e293b");
+    grad.addColorStop(0, p.bgGradient ? p.bgGradient[0] : "#1e1b4b");
+    grad.addColorStop(1, p.bgGradient ? p.bgGradient[1] : "#312e81");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1000, 1500);
 
-    ctx.fillStyle = p.accentColor || "#38bdf8";
+    // Category Pill Badge
+    ctx.fillStyle = p.accentColor || "#f43f5e";
     ctx.beginPath(); ctx.roundRect(80, 70, 520, 64, 32); ctx.fill();
-    ctx.fillStyle = "#000000"; ctx.font = "bold 26px sans-serif";
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 26px sans-serif";
     ctx.fillText(p.category.toUpperCase(), 110, 111);
 
-    ctx.fillStyle = "#ffffff"; ctx.font = "bold 60px sans-serif";
-    wrapText(ctx, p.shortName, 80, 225, 840, 74);
+    // Product Title
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 58px sans-serif";
+    wrapText(ctx, p.shortName, 80, 225, 840, 72);
+
+    // Product Photo / Showcase Card with Drop Shadow
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 12;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.roundRect(80, 420, 840, 560, 28); ctx.fill();
+    ctx.restore();
 
     if (uploadedImg) {
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath(); ctx.roundRect(80, 420, 840, 560, 28); ctx.fill();
       const scale = Math.min(760 / uploadedImg.width, 500 / uploadedImg.height);
       const w = uploadedImg.width * scale; const h = uploadedImg.height * scale;
       ctx.drawImage(uploadedImg, 500 - w / 2, 700 - h / 2, w, h);
     } else {
-      ctx.fillStyle = "rgba(255,255,255,0.08)";
-      ctx.beginPath(); ctx.roundRect(80, 420, 840, 220, 28); ctx.fill();
-      ctx.fillStyle = p.accentColor || "#38bdf8"; ctx.font = "bold 40px sans-serif";
-      ctx.fillText("CURATED AMAZON PICK", 130, 515);
-      ctx.fillStyle = "#ffffff"; ctx.font = "30px sans-serif";
-      ctx.fillText(`Board: ${p.board}`, 130, 575);
+      ctx.fillStyle = "#f3f4f6";
+      ctx.beginPath(); ctx.roundRect(110, 450, 780, 500, 20); ctx.fill();
+      ctx.fillStyle = p.accentColor || "#f43f5e"; ctx.font = "bold 38px sans-serif";
+      ctx.fillText("CURATED AMAZON PICK", 150, 550);
+      ctx.fillStyle = "#4b5563"; ctx.font = "28px sans-serif";
+      ctx.fillText(`Board: ${p.board}`, 150, 610);
     }
 
-    let startY = uploadedImg ? 1050 : 730;
-    ctx.font = "bold 35px sans-serif";
+    // Highlights Bullet Points
+    let startY = 1050;
+    ctx.font = "bold 34px sans-serif";
     p.highlights.forEach((item, idx) => {
-      ctx.fillStyle = p.accentColor || "#38bdf8"; ctx.fillText("✔", 90, startY + idx * 70);
+      ctx.fillStyle = p.accentColor || "#f43f5e"; ctx.fillText("✔", 90, startY + idx * 70);
       ctx.fillStyle = "#ffffff"; ctx.fillText(item.substring(0, 42), 145, startY + idx * 70);
     });
 
+    // Bottom CTA Button
+    ctx.save();
+    ctx.shadowColor = "rgba(230, 0, 35, 0.4)";
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 8;
     ctx.fillStyle = "#e60023";
     ctx.beginPath(); ctx.roundRect(80, 1340, 840, 100, 50); ctx.fill();
-    ctx.fillStyle = "#ffffff"; ctx.font = "bold 38px sans-serif";
+    ctx.restore();
+
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("CHECK LATEST PRICE ON AMAZON ->", 500, 1403);
+    ctx.fillText("CHECK LATEST PRICE ON AMAZON →", 500, 1403);
     ctx.textAlign = "left";
   }
 
@@ -336,20 +366,15 @@
   function downloadPinImage() {
     const canvas = document.getElementById("pinCanvas");
     const link = document.createElement("a");
-    link.download = `${currentProduct.id}-pin.png`;
+    link.download = `${currentProduct.id}-pro-pin.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
-    recordLog(currentProduct.shortName, currentProduct.board, "Image Saved");
-  }
-
-  function copyLinkOnly() {
-    navigator.clipboard.writeText(currentProduct.affiliateLink);
-    alert("Affiliate link copied: " + currentProduct.affiliateLink);
+    recordLog(currentProduct.shortName, currentProduct.board, "Pro Image Saved");
   }
 
   function openPinterestCreator() {
     navigator.clipboard.writeText(document.getElementById("pinDesc").value);
-    alert("Pin Description copied!\n\nOpening Pinterest... Upload your saved Pin image, paste the description, and select board: " + currentProduct.board);
+    alert("Pin Description copied!\n\nOpening Pinterest... Upload your new Pro Pin image, paste description, and select board: " + currentProduct.board);
     window.open("https://www.pinterest.com/pin-creation-tool/", "_blank");
     recordLog(currentProduct.shortName, currentProduct.board, "Opened Pinterest");
   }
