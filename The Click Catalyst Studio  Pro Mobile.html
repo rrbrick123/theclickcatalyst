@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Click Catalyst Studio — Pro Mobile</title>
+<style>
+:root{--primary:#e60023;--bg:#f4f5f7;--border:#dcdcdc}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:#111;margin:0;padding:12px}
+.container,header{max-width:1180px;margin:0 auto 16px}
+header,.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card{margin-bottom:16px}
+.badge{display:inline-block;margin-top:8px;background:#e0f2fe;color:#0369a1;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bae6fd}
+h2{margin-top:0;font-size:16px;border-bottom:1px solid #eee;padding-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+label{display:block;font-weight:600;margin:12px 0 6px;font-size:13px}
+input[type=text],select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:8px;font-size:14px;box-sizing:border-box}
+textarea{height:95px;resize:vertical}
+.btn{background:var(--primary);color:#fff;border:none;padding:12px 16px;border-radius:24px;font-weight:600;cursor:pointer;font-size:14px;width:100%;margin-top:10px;display:block;text-align:center;box-sizing:border-box}
+.b2{background:#1f2937}.bo{background:transparent;color:#333;border:1px solid #333}
+.bs{width:auto;padding:6px 12px;font-size:12px;margin-top:0;display:inline-block}
+canvas{width:100%;max-width:340px;height:auto;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:block;margin:0 auto}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+th,td{border-bottom:1px solid #eee;padding:6px;text-align:left}
+.note{font-size:12px;color:#666;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1 style="margin:0;font-size:19px;">The Click Catalyst Studio (Pro v3)</h1>
+  <div class="note">Pinterest (@rrbrick123) • Store ID: rishikeshbhav-21</div>
+  <div class="badge">App ID: 1629028 (Trial Pending) • Feature Infographic Pins</div>
+</header>
+<div class="container">
+
+<div class="card">
+  <h2><span>1. Select Product</span><button class="btn bo bs" onclick="downloadJSON()">Backup JSON</button></h2>
+  <label>Search Product Name:</label>
+  <input type="text" id="searchBox" placeholder="Type 'boAt', 'Qlect', or 'Scrub'..." oninput="filterProducts()">
+  <label>Matched Product (<span id="prodCount">3</span> saved):</label>
+  <select id="productSelect" onchange="loadProduct()"></select>
+  <label>Main product photo (real item, 3/4 angle):</label>
+  <input type="file" id="mainUp" accept="image/*" onchange="upload(event,'main')">
+  <label>Optional: close-up of a real visible feature:</label>
+  <input type="file" id="detailUp" accept="image/*" onchange="upload(event,'detail')">
+</div>
+
+<div class="card">
+  <h2>2. Research & Pin Text</h2>
+  <button class="btn b2" onclick="copyResearch()">Step 1: Copy Research Prompt (paste in any AI chat)</button>
+  <label>Paste the AI's JSON answer here:</label>
+  <textarea id="aiJson" placeholder='{"kicker":"...","tagline":"...","features":[...]}'></textarea>
+  <button class="btn" onclick="applyJson()">Step 2: Apply to Pin</button>
+  <div class="note">Or edit the fields by hand. The pin updates live. Only use facts from the real listing.</div>
+  <label>Top line (small):</label><input type="text" id="e_kicker" oninput="readEdit()">
+  <label>Main title:</label><input type="text" id="e_name" oninput="readEdit()">
+  <label>Tagline ribbon:</label><input type="text" id="e_tag" oninput="readEdit()">
+  <label>Short description:</label><input type="text" id="e_sub" oninput="readEdit()">
+  <label>Round badge (2-3 words):</label><input type="text" id="e_badge" oninput="readEdit()">
+  <label>Up to 5 features (comma-separated):</label><input type="text" id="e_feats" oninput="readEdit()">
+  <label>Perfect for (use cases):</label><input type="text" id="e_use" oninput="readEdit()">
+  <label>Bottom bar, up to 4 (comma-separated):</label><input type="text" id="e_bar" oninput="readEdit()">
+  <button class="btn b2" onclick="saveEdits()">Save Changes</button>
+</div>
+
+<div class="card" style="text-align:center;">
+  <h2>3. Pin Image (1000×1500 px)</h2>
+  <canvas id="pinCanvas" width="1000" height="1500"></canvas>
+  <button class="btn" onclick="downloadPin()">Download Pin Image (.png)</button>
+  <button class="btn b2" onclick="copyInfoPrompt()">Copy Full Infographic Prompt (AI image tool)</button>
+  <button class="btn bo" onclick="copyImagePrompt()">Copy Product-Photo Prompt</button>
+  <div class="note">Long-press the image to save. Use the image prompt in an AI tool, then upload the result as the main photo.</div>
+</div>
+
+<div class="card">
+  <h2>4. Pin Content & Publish</h2>
+  <label>Pinterest Board:</label><input type="text" id="pinBoard" readonly style="background:#f9f9f9;font-weight:bold;">
+  <label>Affiliate Link:</label><input type="text" id="pinLink" readonly style="background:#f9f9f9;">
+  <label>Pin Title:</label><input type="text" id="pinTitle" maxlength="100">
+  <label>Pin Description (#ad #affiliate included):</label><textarea id="pinDesc"></textarea>
+  <button class="btn b2" onclick="openPinterest()">Copy Text & Open Pinterest</button>
+  <button class="btn bo" onclick="exportCSV()">Export Bulk CSV</button>
+</div>
+
+<div class="card" style="border:2px solid #e5e7eb;">
+  <h2><span>+ Add New Amazon Product</span><button class="btn bo bs" onclick="toggleAdd()" id="toggleBtn">Open Form</button></h2>
+  <div id="addForm" style="display:none;">
+    <label>Short Display Name:</label><input type="text" id="newShortName" placeholder="e.g. 3 Pcs Lunch Container Set">
+    <label>Category & Board:</label>
+    <select id="newCategory" onchange="autoBoard()">
+      <option value="Home & Everyday">Home & Everyday (→ Other Seller Zone)</option>
+      <option value="Kitchen / Small Appliances">Kitchen / Small Appliances (→ Kitchen Organisation)</option>
+      <option value="Electronics / Gadgets">Electronics / Gadgets (→ Other Seller Zone)</option>
+    </select>
+    <label>Full Amazon Product Title:</label><input type="text" id="newFullName" placeholder="Paste full Amazon title...">
+    <label>Amazon Affiliate Link:</label><input type="text" id="newLink" placeholder="https://link.amazon/...">
+    <label>Target Board:</label><input type="text" id="newBoard" value="Other Seller Zone" readonly style="background:#f9f9f9;font-weight:bold;">
+    <label>Features (comma-separated, real ones only):</label><input type="text" id="newHighlights">
+    <label>Hashtags (#ad #affiliate added automatically):</label><input type="text" id="newKeywords" placeholder="#AmazonFinds">
+    <button class="btn" onclick="saveNew()">Save Product & Open Editor</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2><span>5. Publishing Log</span><button class="btn bo bs" onclick="clearLogs()">Clear</button></h2>
+  <table><thead><tr><th>Time</th><th>Product</th><th>Board</th><th>Status</th></tr></thead><tbody id="logBody"></tbody></table>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const DEFAULTS=[
+{id:"prod_001",shortName:"boAt Rockerz 113",kicker:"BLUETOOTH NECKBAND",tagline:"Wireless audio, all day",
+ sub:"Wireless neckband earphones with mic, magnetic buds and app support.",badge:"40H Battery",
+ useCases:"Gym, travel, calls & music",bar:["Great Gift Idea","Wireless Freedom","Everyday Use","Shop on Amazon"],
+ fullName:"boAt Rockerz 113, 40H Battery, Dual Pair, Fast Charge, ENx Tech, Stream Ad Free Music via App Support, Magnetic Buds, Bluetooth Neckband, Wireless with Mic in Ear Earphones (Active Black)",
+ affiliateLink:"https://link.amazon/B01BSk8N1",category:"Electronics / Earphones",board:"Other Seller Zone",
+ bgGradient:["#0f172a","#1e293b"],accentColor:"#0284c7",
+ highlights:["40 Hours Battery Backup","ENx Tech Clear Calls","Dual Pairing","Fast Charge","Magnetic Buds + App"],
+ keywords:"#boAtRockerz #BluetoothEarphones #WirelessNeckband #TechFinds #AmazonIndia #ad #affiliate"},
+{id:"prod_002",shortName:"Portable USB Smoothie Blender",kicker:"QLECT",tagline:"Fresh smoothies anywhere",
+ sub:"Rechargeable mini personal blender with 6 blades and 3 speed gears.",badge:"USB Rechargeable",
+ useCases:"Home, office, gym & travel",bar:["Great Gift Idea","Easy to Carry","Everyday Use","Shop on Amazon"],
+ fullName:"Qlect Portable Blender Electric Juicers Fruit Mixers USB Rechargeable Smoothie Mini Personal Juicer, 6 Blades, 3 Gears, 1500 mAh Rechargeable Battery",
+ affiliateLink:"https://link.amazon/B0hBrrgOn",category:"Kitchen / Small Appliances",board:"Kitchen Organisation",
+ bgGradient:["#064e3b","#047857"],accentColor:"#059669",
+ highlights:["6-Blade Mixing System","3 Adjustable Speed Gears","1500 mAh Battery","USB Rechargeable","Portable Size"],
+ keywords:"#KitchenOrganisation #PortableBlender #SmoothieMaker #KitchenHacks #AmazonKitchen #ad #affiliate"},
+{id:"prod_003",shortName:"De-Tan Scrub",kicker:"DR.RASHEL BEAUTY ELIXIRS",tagline:"Glow from home",
+ sub:"De-tan scrub for glowing skin, 380ml.",badge:"380 ml",
+ useCases:"Daily skincare & self-care",bar:["Great Gift Idea","Self-Care","Everyday Use","Shop on Amazon"],
+ fullName:"DR.RASHEL Beauty Elixirs De-Tan Scrub for Glowing Skin - 380ml",
+ affiliateLink:"https://link.amazon/DeTanScrub",category:"Home & Everyday",board:"Other Seller Zone",
+ bgGradient:["#1e1b4b","#312e81"],accentColor:"#e11d48",
+ highlights:["Brightening Formula","Deep Dirt Removal","Gentle Exfoliation","Botanical Extracts"],
+ keywords:"#SkincareFinds #DeTanScrub #AmazonBeauty #BeautyEssentials #ad #affiliate"}];
+
+const IMAGE_PROMPT=`Create a polished product image for: [PRODUCT NAME].
+First, identify the product's recognizable shape, materials, colors, and key visible features. Present it as the clear focal point in a premium, eye-catching composition that feels both appealing to customers and credible to technical audiences.
+
+Use clean studio lighting, realistic materials, crisp detail, balanced contrast, and a background that complements the product without distracting from it. Show the product at a flattering three-quarter angle; include a close-up or subtle technical-style detail view only if it helps explain a real, visible feature. The overall image should feel professional, modern, trustworthy, and suitable for a product page or marketing campaign.
+
+Keep the product's design faithful to the real item. Don't invent features, accessories, specifications, logos, labels, or text. Avoid clutter, exaggerated effects, misleading claims, and tiny unreadable lettering. If the exact product is unclear, use a neutral, plausible presentation rather than implying unverified details.`;
+
+let PRODUCTS=DEFAULTS;
+try{const s=JSON.parse(localStorage.getItem("cap_products_v2"));
+ if(Array.isArray(s)&&s.length&&s.every(p=>p&&p.id&&p.shortName&&Array.isArray(p.highlights)))PRODUCTS=s;}catch(e){}
+if(!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();};}
+let mainImg=null,detailImg=null,cur=PRODUCTS[0];
+
+function saveAll(){try{localStorage.setItem("cap_products_v2",JSON.stringify(PRODUCTS));}catch(e){}}
+function init(){populate(PRODUCTS);loadProduct();renderLogs();}
+function toggleAdd(){const f=$("addForm"),o=f.style.display==="none";f.style.display=o?"block":"none";$("toggleBtn").textContent=o?"Close Form":"Open Form";}
+function autoBoard(){$("newBoard").value=$("newCategory").value.includes("Kitchen")?"Kitchen Organisation":"Other Seller Zone";}
+const list=s=>s.split(",").map(x=>x.trim()).filter(Boolean);
+
+function saveNew(){
+  const shortName=$("newShortName").value.trim(),link=$("newLink").value.trim();
+  if(!shortName||!link){alert("Enter a Short Display Name and your Amazon Affiliate Link.");return;}
+  let kw=$("newKeywords").value.trim(); if(!kw.toLowerCase().includes("#ad"))kw=(kw+" #ad #affiliate").trim();
+  const board=$("newBoard").value,k=board==="Kitchen Organisation",cat=$("newCategory").value;
+  const np={id:"prod_"+Date.now().toString(36),shortName,kicker:cat.split("/")[0].trim(),tagline:"",sub:"",badge:"",useCases:"",
+    bar:["Great Gift Idea","Everyday Use","Easy to Use","Shop on Amazon"],fullName:$("newFullName").value.trim()||shortName,
+    affiliateLink:link,category:cat,board,bgGradient:k?["#064e3b","#047857"]:["#1e1b4b","#312e81"],accentColor:k?"#059669":"#e11d48",
+    highlights:list($("newHighlights").value).slice(0,5),keywords:kw};
+  PRODUCTS.unshift(np);saveAll();populate(PRODUCTS);$("productSelect").value=np.id;loadProduct();
+  recordLog(np.shortName,np.board,"Added to DB");toggleAdd();
+  alert("Saved! Now use 'Research & Pin Text' to fill in the pin, and add a real product photo.");
+}
+
+function downloadJSON(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(PRODUCTS,null,2)],{type:"application/json"}));a.download="products.json";a.click();}
+function populate(l){const s=$("productSelect");$("prodCount").textContent=PRODUCTS.length;s.innerHTML="";
+  l.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=`${p.shortName} (${p.board})`;s.appendChild(o);});}
+function filterProducts(){const q=$("searchBox").value.toLowerCase();
+  const f=PRODUCTS.filter(p=>(p.fullName||"").toLowerCase().includes(q)||(p.shortName||"").toLowerCase().includes(q)||(p.kicker||"").toLowerCase().includes(q));
+  populate(f.length?f:PRODUCTS);loadProduct();}
+
+function buildDesc(){const p=cur,f=p.highlights.length?`\n✅ ${p.highlights.join(" • ")}\n`:"\n";
+  $("pinDesc").value=`Looking for the ${p.shortName}? Check out why it stands out:${f}\nTap the link to check the latest price on Amazon! ${p.keywords}`;
+  $("pinTitle").value=`${p.shortName} — Top Features & Review`;}
+function syncEdit(){const p=cur;$("e_kicker").value=p.kicker||"";$("e_name").value=p.shortName||"";$("e_tag").value=p.tagline||"";
+  $("e_sub").value=p.sub||"";$("e_badge").value=p.badge||"";$("e_feats").value=(p.highlights||[]).join(", ");
+  $("e_use").value=p.useCases||"";$("e_bar").value=(p.bar||[]).join(", ");}
+function readEdit(){const p=cur;p.kicker=$("e_kicker").value;p.shortName=$("e_name").value;p.tagline=$("e_tag").value;p.sub=$("e_sub").value;
+  p.badge=$("e_badge").value;p.highlights=list($("e_feats").value).slice(0,5);p.useCases=$("e_use").value;p.bar=list($("e_bar").value).slice(0,4);render();}
+function saveEdits(){readEdit();saveAll();buildDesc();populate(PRODUCTS);$("productSelect").value=cur.id;alert("Saved.");}
+
+function loadProduct(){
+  cur=PRODUCTS.find(p=>p.id===$("productSelect").value)||PRODUCTS[0];
+  mainImg=detailImg=null;$("mainUp").value="";$("detailUp").value="";
+  $("pinBoard").value=cur.board;$("pinLink").value=cur.affiliateLink;buildDesc();syncEdit();render();}
+function upload(e,kind){const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=ev=>{const i=new Image();i.onload=()=>{if(kind==="detail")detailImg=i;else mainImg=i;render();};i.src=ev.target.result;};r.readAsDataURL(f);}
+
+function copyResearch(){
+  const t=`Research this Amazon product: ${cur.fullName}\nUse ONLY facts that appear in the real listing. Do not invent features, specs or claims. Return ONLY this JSON:\n{"kicker":"2-3 word category line, caps","tagline":"max 5 words","sub":"one sentence, max 18 words","badge":"max 3 words","features":["max 4 words each","exactly 5"],"useCases":"3-4 places or uses","bar":["max 3 words each","exactly 4"]}`;
+  navigator.clipboard.writeText(t).then(()=>alert("Research prompt copied. Paste it into an AI chat with web search, then paste the JSON answer back here."));}
+function applyJson(){
+  try{const s=$("aiJson").value,j=JSON.parse(s.slice(s.indexOf("{"),s.lastIndexOf("}")+1));
+    if(j.kicker)$("e_kicker").value=j.kicker;if(j.tagline)$("e_tag").value=j.tagline;if(j.sub)$("e_sub").value=j.sub;
+    if(j.badge)$("e_badge").value=j.badge;if(j.features)$("e_feats").value=[].concat(j.features).join(", ");
+    if(j.useCases)$("e_use").value=j.useCases;if(j.bar)$("e_bar").value=[].concat(j.bar).join(", ");
+    readEdit();alert("Applied. Check the facts, then tap Save Changes.");
+  }catch(e){alert("Could not read that JSON. Paste the full answer, starting with { and ending with }.");}}
+
+// ---------- drawing helpers ----------
+const FONT="'Arial Narrow',Arial,sans-serif";
+function wrap(x,t,w){const ws=String(t).split(" "),L=[];let l="";
+  ws.forEach(w2=>{const n=l?l+" "+w2:w2;if(x.measureText(n).width>w&&l){L.push(l);l=w2;}else l=n;});if(l)L.push(l);return L;}
+function fit(x,t,w,px,min,style){let s=px;do{x.font=`${style||"bold"} ${s}px ${FONT}`;s-=2;}while(x.measureText(t).width>w&&s>min);}
+function icon(t){t=t.toLowerCase();
+  const m=[[/battery|charge|usb|power/,"🔋"],[/call|mic|sound|audio|music|clear/,"🎧"],[/steel|durable|strong|last|quality/,"🛡️"],[/leak|water|splash/,"💧"],
+   [/hot|heat|thermal|insul|warm/,"🌡️"],[/bag|carry|portable|travel|size/,"👜"],[/skin|scrub|glow|bright|exfol|formula/,"✨"],[/blade|speed|gear|mix|blend/,"⚙️"],
+   [/free|eco|natural|botanical|food/,"🌿"],[/gift/,"🎁"],[/pair|bluetooth|wireless|app/,"📶"],[/dirt|clean|remov/,"🧼"],[/stack|container|set/,"📚"],[/amazon|shop/,"🛒"]];
+  for(const [r,e] of m)if(r.test(t))return e;return "✔";}
+
+function render(){
+  const c=$("pinCanvas"),x=c.getContext("2d"),p=cur,dk=(p.bgGradient&&p.bgGradient[0])||"#3b2a1e",ac=p.accentColor||"#c2410c";
+  x.clearRect(0,0,1000,1500);x.textAlign="center";x.textBaseline="alphabetic";
+  // cream studio background + glow behind product
+  let g=x.createLinearGradient(0,0,0,1500);g.addColorStop(0,"#fffaf3");g.addColorStop(1,"#efe2d3");x.fillStyle=g;x.fillRect(0,0,1000,1500);
+  g=x.createRadialGradient(620,900,40,620,900,460);g.addColorStop(0,"rgba(255,255,255,.95)");g.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=g;x.fillRect(0,500,1000,800);
+
+  x.save();x.fillStyle="rgba(90,130,70,.16)";[[40,40,-.7],[960,30,.7]].forEach(([a,b,r])=>{x.beginPath();x.ellipse(a,b,90,28,r,0,7);x.fill();});x.restore();
+  x.fillStyle="rgba(0,0,0,.12)";for(let i=0;i<4;i++)for(let j=0;j<4;j++){x.beginPath();x.arc(60+i*14,330+j*14,2.5,0,7);x.fill();}
+  // kicker + title
+  let y=105;
+  if(p.kicker){fit(x,p.kicker.toUpperCase(),860,54,26);x.fillStyle=ac;x.fillText(p.kicker.toUpperCase(),500,y);y+=20;}
+  const T=(p.shortName||"").toUpperCase();let s=112,L;
+  do{x.font=`bold ${s}px ${FONT}`;L=wrap(x,T,880);s-=4;}while((L.length>2||L.some(l=>x.measureText(l).width>880))&&s>44);
+  x.fillStyle=dk;y+=s+8;L.forEach((l,i)=>x.fillText(l,500,y+i*(s+4)));y+=(L.length-1)*(s+4);
+  // tagline ribbon
+  if(p.tagline){y+=34;x.fillStyle=dk;x.beginPath();x.roundRect(110,y,780,62,6);x.fill();
+    fit(x,p.tagline.toUpperCase(),740,34,18);x.fillStyle="#fff";x.fillText(p.tagline.toUpperCase(),500,y+43);y+=62;}
+  // description
+  if(p.sub){x.font=`30px ${FONT}`;x.fillStyle="#3f3a36";y+=26;wrap(x,p.sub,720).slice(0,2).forEach((l,i)=>x.fillText(l,500,y+i*38+18));}
+
+  // product stage
+  const cx=620,cy=905;
+  if(mainImg){const k=Math.min(650/mainImg.width,640/mainImg.height),w=mainImg.width*k,h=mainImg.height*k,ix=cx-w/2,iy=cy-h/2,by=cy+h/2;
+    x.save();x.filter="blur(16px)";x.fillStyle="rgba(0,0,0,.25)";x.beginPath();x.ellipse(cx,by+6,w*.4,15,0,0,7);x.fill();x.restore();
+    x.save();x.shadowColor="rgba(0,0,0,.22)";x.shadowBlur=26;x.shadowOffsetY=12;x.drawImage(mainImg,ix,iy,w,h);x.restore();
+  }else{x.strokeStyle="#c9bfb3";x.lineWidth=3;x.setLineDash([14,12]);x.beginPath();x.roundRect(350,740,540,330,26);x.stroke();x.setLineDash([]);
+    x.fillStyle="#8b8176";x.font=`30px ${FONT}`;x.fillText("Upload real product photo",620,915);}
+  if(detailImg){const dx=870,dy=1120,r=88;x.save();x.shadowColor="rgba(0,0,0,.3)";x.shadowBlur=16;x.fillStyle="#fff";x.beginPath();x.arc(dx,dy,r+8,0,7);x.fill();x.restore();
+    x.save();x.beginPath();x.arc(dx,dy,r,0,7);x.clip();const k=Math.max(2*r/detailImg.width,2*r/detailImg.height);
+    x.drawImage(detailImg,dx-detailImg.width*k/2,dy-detailImg.height*k/2,detailImg.width*k,detailImg.height*k);x.restore();
+    x.strokeStyle=ac;x.lineWidth=5;x.beginPath();x.arc(dx,dy,r+8,0,7);x.stroke();}
+
+  // round badge
+  if(p.badge){const bx=855,by=620;x.fillStyle=dk;x.beginPath();x.arc(bx,by,92,0,7);x.fill();
+    x.strokeStyle="rgba(255,255,255,.7)";x.lineWidth=3;x.setLineDash([9,7]);x.beginPath();x.arc(bx,by,80,0,7);x.stroke();x.setLineDash([]);
+    x.fillStyle="#fff";x.font=`bold 27px ${FONT}`;const bl=wrap(x,p.badge.toUpperCase(),130).slice(0,3);
+    bl.forEach((l,i)=>x.fillText(l,bx,by+9-(bl.length-1)*15+i*30));}
+
+  // feature column (icons + labels)
+  (p.highlights||[]).slice(0,5).forEach((f,i)=>{const fy=600+i*150;
+    x.save();x.shadowColor="rgba(0,0,0,.15)";x.shadowBlur=12;x.shadowOffsetY=4;x.fillStyle="#fff";x.beginPath();x.arc(150,fy,50,0,7);x.fill();x.restore();
+    x.strokeStyle=ac;x.lineWidth=3;x.beginPath();x.arc(150,fy,50,0,7);x.stroke();
+    x.textBaseline="middle";x.font="46px sans-serif";x.fillStyle=dk;x.fillText(icon(f),150,fy+3);x.textBaseline="alphabetic";
+    x.font=`bold 21px ${FONT}`;x.fillStyle=dk;wrap(x,f.toUpperCase(),170).slice(0,3).forEach((l,j)=>x.fillText(l,150,fy+82+j*23));});
+
+  // "perfect for" banner + order box
+  if(p.useCases){x.save();x.translate(460,1310);x.rotate(-.03);x.fillStyle=dk;x.beginPath();x.roundRect(-165,-52,330,104,10);x.fill();
+    x.fillStyle="rgba(255,255,255,.8)";x.font=`italic 24px ${FONT}`;x.fillText("Perfect for",0,-18);
+    x.fillStyle="#fff";x.font=`bold 28px ${FONT}`;wrap(x,p.useCases.toUpperCase(),300).slice(0,2).forEach((l,i)=>x.fillText(l,0,16+i*30));x.restore();}
+  x.save();x.shadowColor="rgba(0,0,0,.2)";x.shadowBlur=14;x.shadowOffsetY=5;x.fillStyle="#fff";x.beginPath();x.roundRect(650,1255,290,112,16);x.fill();x.restore();
+  x.strokeStyle=ac;x.lineWidth=3;x.beginPath();x.roundRect(650,1255,290,112,16);x.stroke();
+  x.fillStyle=dk;x.font=`bold 46px ${FONT}`;x.fillText("ORDER NOW",795,1317);x.fillStyle=ac;x.font=`bold 30px ${FONT}`;x.fillText("on amazon",795,1352);
+  x.fillStyle=dk;x.beginPath();x.arc(915,1262,30,0,7);x.fill();x.textBaseline="middle";x.font="28px sans-serif";x.fillText("🛒",915,1264);x.textBaseline="alphabetic";
+
+  // bottom bar
+  x.fillStyle=dk;x.fillRect(0,1395,1000,105);
+  (p.bar||[]).slice(0,4).forEach((b,i)=>{const bx=125+i*250;x.textBaseline="middle";x.font="34px sans-serif";x.fillStyle="#fff";x.fillText(icon(b),bx,1428);
+    x.textBaseline="alphabetic";fit(x,b.toUpperCase(),220,22,14);x.fillStyle="#fff";x.fillText(b.toUpperCase(),bx,1478);});
+}
+
+function copyInfoPrompt(){const p=cur,f=(p.highlights||[]).join("; "),b=(p.bar||[]).join("; ");
+  const t=`Create a vertical 2:3 (1000x1500) Pinterest product infographic ad for: ${p.fullName||p.shortName}.
+Use my attached real product photo as the hero. Keep the product's shape, colors, materials and any printed text exactly as in the photo. Do not invent features, accessories, logos or claims.
+Layout, top to bottom: small caps line "${p.kicker||""}"; huge bold title "${p.shortName}"; dark ribbon with "${p.tagline||""}"; one line "${p.sub||""}"; round dark badge top-right "${p.badge||""}"; left column of circular line-icons with short bold labels: ${f}; centre-right: the product on a soft cream studio background with realistic shadow, plus a small circular close-up inset of a real visible detail; brush-stroke banner "Perfect for ${p.useCases||""}"; white rounded box "ORDER NOW on amazon" with a small cart icon; bottom bar with 4 icon items: ${b}.
+Style: warm cream palette, dark ${(p.bgGradient||[])[0]||"brown"} accents, ${p.accentColor||"orange"} highlights, subtle leaf shadows, clean studio lighting, crisp readable text, no tiny lettering, no clutter.`;
+  navigator.clipboard.writeText(t).then(()=>alert("Infographic prompt copied. In your AI image tool, attach the real product photo, paste this, then upload the result as the main photo here or use it as the pin."));}
+function copyImagePrompt(){navigator.clipboard.writeText(IMAGE_PROMPT.replace("[PRODUCT NAME]",cur.fullName||cur.shortName)).then(()=>alert("Image prompt copied for: "+cur.shortName));}
+function downloadPin(){if(!mainImg&&!confirm("No product photo added. Download with the placeholder?"))return;
+  const a=document.createElement("a");a.download=`${cur.id}-pin.png`;a.href=$("pinCanvas").toDataURL("image/png");a.click();recordLog(cur.shortName,cur.board,"Pin Image Saved");}
+function openPinterest(){navigator.clipboard.writeText($("pinDesc").value);alert("Description copied!\n\nUpload your pin image, paste the description and choose board: "+cur.board);
+  window.open("https://www.pinterest.com/pin-creation-tool/","_blank");recordLog(cur.shortName,cur.board,"Opened Pinterest");}
+function exportCSV(){const q=s=>`"${String(s).replace(/"/g,'""')}"`;
+  const csv="Title,Media URL,Pinterest board,Description,Link,Keywords\n"+[q($("pinTitle").value),q(`https://rrbrick123.github.io/theclickcatalyst/pins/${cur.id}-pin.png`),q(cur.board),q($("pinDesc").value),q(cur.affiliateLink),q(cur.category)].join(",")+"\n";
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download=`pinterest-bulk-${cur.id}.csv`;a.click();recordLog(cur.shortName,cur.board,"CSV Exported");}
+
+function getLogs(){try{return JSON.parse(localStorage.getItem("cap_logs")||"[]");}catch(e){return[];}}
+function recordLog(product,board,status){const l=getLogs();l.unshift({time:new Date().toLocaleTimeString(),product,board,status});try{localStorage.setItem("cap_logs",JSON.stringify(l));}catch(e){}renderLogs();}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function renderLogs(){const l=getLogs();$("logBody").innerHTML=l.length?l.map(r=>`<tr><td>${esc(r.time)}</td><td>${esc(r.product)}</td><td>${esc(r.board)}</td><td><b>${esc(r.status)}</b></td></tr>`).join(""):`<tr><td colspan="4" style="color:#888;">No activity logged yet.</td></tr>`;}
+function clearLogs(){try{localStorage.removeItem("cap_logs");}catch(e){}renderLogs();}
+init();
+</script>
+</body>
+</html>
