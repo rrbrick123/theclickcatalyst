@@ -1,36 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Click Catalyst Studio — Pro Mobile</title>
-<style>
-:root{--primary:#e60023;--dark:#111;--bg:#f4f5f7;--card:#fff;--border:#dcdcdc}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--dark);margin:0;padding:12px}
-.container{max-width:1180px;margin:0 auto}
-header{max-width:1180px;margin:0 auto 16px;background:var(--card);padding:14px 18px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.status-badge{display:inline-block;margin-top:8px;background:#e0f2fe;color:#0369a1;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bae6fd}
-.card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-h2{margin-top:0;font-size:16px;border-bottom:1px solid #eee;padding-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-label{display:block;font-weight:600;margin:12px 0 6px;font-size:13px}
-input[type=text],select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:8px;font-size:14px;box-sizing:border-box}
-textarea{height:105px;resize:vertical}
-.btn{background:var(--primary);color:#fff;border:none;padding:12px 16px;border-radius:24px;font-weight:600;cursor:pointer;font-size:14px;width:100%;margin-top:10px;display:block;text-align:center;box-sizing:border-box}
-.btn-secondary{background:#1f2937}
-.btn-outline{background:transparent;color:#333;border:1px solid #333}
-.btn-small{width:auto;padding:6px 12px;font-size:12px;margin-top:0;display:inline-block}
-canvas{width:100%;max-width:320px;height:auto;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.12);display:block;margin:0 auto}
-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
-th,td{border-bottom:1px solid #eee;padding:6px;text-align:left}
-.small-note{font-size:12px;color:#666;margin-top:6px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Click Catalyst Studio — Pro Mobile</title>
+  <style>
+    :root { --primary: #e60023; --dark: #111111; --bg: #f4f5f7; --card: #ffffff; --border: #dcdcdc; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 12px; }
+    .container { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
+    header { max-width: 1180px; margin: 0 auto 16px auto; background: var(--card); padding: 14px 18px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .status-badge { display: inline-block; margin-top: 8px; background: #e0f2fe; color: #0369a1; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #bae6fd; }
+    .card { background: var(--card); padding: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    h2 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    label { display: block; font-weight: 600; margin: 12px 0 6px; font-size: 13px; }
+    input[type="text"], select, textarea { width: 100%; padding: 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+    textarea { height: 105px; resize: vertical; }
+    .btn { background: var(--primary); color: #fff; border: none; padding: 12px 16px; border-radius: 24px; font-weight: 600; cursor: pointer; font-size: 14px; width: 100%; margin-top: 10px; display: block; text-align: center; box-sizing: border-box; }
+    .btn-secondary { background: #1f2937; }
+    .btn-outline { background: transparent; color: #333; border: 1px solid #333; }
+    .btn-small { width: auto; padding: 6px 12px; font-size: 12px; margin-top: 0; display: inline-block; }
+    canvas { width: 100%; max-width: 320px; height: auto; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); display: block; margin: 0 auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+    th, td { border-bottom: 1px solid #eee; padding: 6px; text-align: left; }
+    .small-note { font-size: 12px; color: #666; margin-top: 6px; }
+  </style>
 </head>
 <body>
+
 <header>
-  <h1 style="margin:0;font-size:19px;">The Click Catalyst Studio (Pro v2.2)</h1>
+  <h1 style="margin:0; font-size:19px;">The Click Catalyst Studio (Pro v2.1)</h1>
   <div class="small-note">Pinterest (@rrbrick123) • Store ID: rishikeshbhav-21</div>
-  <div class="status-badge">App ID: 1629028 (Trial Pending) • Studio Product Render</div>
+  <div class="status-badge">App ID: 1629028 (Trial Pending) • Pro Graphics Active</div>
 </header>
 
 <div class="container">
-  <div class="card">
+  <div>
+    <!-- STEP 1: SELECT PRODUCT -->
+    <div class="card">
+      <h2>
+        <span>1. Select Product</span>
+        <button class="btn btn-outline btn-small" onclick="downloadProductsJSON()">Backup JSON</button>
+      </h2>
+      <label for="searchBox">Search Product Name:</label>
+      <input type="text" id="searchBox" placeholder="Type 'boAt', 'Qlect', or 'Scrub'..." oninput="filterProducts()">
+      
+      <label for="productSelect">Matched Product (<span id="prodCount">3</span> saved):</label>
+      <select id="productSelect" onchange="loadSelectedProduct()"></select>
+
+      <label for="productImageUpload">Optional: Add Product Photo from Phone Gallery:</label>
+      <input type="file" id="productImageUpload" accept="image/*" onchange="handleImageUpload(event)">
+    </div>
+
+    <!-- LIVE PIN GRAPHIC STUDIO -->
+    <div class="card" style="text-align:center;">
+      <h2>2. Pro Generated Pin Image (1000×1500 px)</h2>
+      <canvas id="pinCanvas" width="1000" height="1500"></canvas>
+      <button class="btn" onclick="downloadPinImage()">Step A: Download Pro Pin Image (.png)</button>
+      <div class="small-note">Or long-press the image above to save to your phone gallery.</div>
+    </div>
+
+    <!-- STEP 3: PIN CONTENT & PUBLISHING -->
+    <div class="card">
+      <h2>3. Pin Content & Publish</h2>
+      <label>Assigned Pinterest Board:</label>
+      <input type="text" id="pinBoard" readonly style="background:#f9f9f9; font-weight:bold;">
+
+      <label>Destination Affiliate Link:</label>
+      <input type="text" id="pinLink" readonly style="background:#f9f9f9;">
+
+      <label>Pin Title:</label>
+      <input type="text" id="pinTitle" maxlength="100" oninput="renderPinCanvas()">
+
+      <label>Pin Description (Includes #ad #affiliate):</label>
+      <textarea id="pinDesc"></textarea>
+
+      <button class="btn btn-secondary" onclick="openPinterestCreator()">Step B: Copy Text & Open Pinterest</button>
+      <button class="btn btn-outline" onclick="exportPinterestCSV()">Export Bulk CSV</button>
+    </div>
+
+    <!-- ADD NEW PRODUCT SECTION -->
+    <div class="card" style="border: 2px solid #e5e7eb;">
+      <h2>
+        <span>+ Add New Amazon Product</span>
+        <button class="btn btn-outline btn-small" onclick="toggleAddForm()" id="toggleBtn">Open Form</button>
+      </h2>
+      <div id="addProductForm" style="display:none;">
+        <label>Short Display Name (for Pin Graphic):</label>
+        <input type="text" id="newShortName" placeholder="e.g. DR.RASHEL De-Tan Scrub">
+
+        <label>Category & Auto-Board Routing:</label>
+        <select id="newCategory" onchange="autoSelectBoard()">
+          <option value="Home & Everyday">Home & Everyday (→ Other Seller Zone)</option>
+          <option value="Kitchen / Small Appliances">Kitchen / Small Appliances (→ Kitchen Organisation)</option>
+          <option value="Electronics / Gadgets">Electronics / Gadgets (→ Other Seller Zone)</option>
+        </select>
+
+        <label>Full Amazon Product Title:</label>
+        <input type="text" id="newFullName" placeholder="Paste full Amazon product title...">
+
+        <label>Amazon Affiliate Link (link.amazon / amzn.to):</label>
+        <input type="text" id="newLink" placeholder="https://link.amazon/...">
+
+        <label>Target Pinterest Board:</label>
+        <input type="text" id="newBoard" value="Other Seller Zone" readonly style="background:#f9f9f9; font-weight:bold;">
+
+        <label>4 Key Features (comma-separated):</label>
+        <input type="text" id="newHighlights" placeholder="Brightening, Dirt Removal, Exfoliating, Nourishing">
+
+        <label>Hashtags (#ad #affiliate added automatically):</label>
+        <input type="text" id="newKeywords" placeholder="#SkincareRoutine #AmazonFinds">
+
+        <button class="btn" onclick="saveNewProduct()">Save Product & Generate Pin</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: LOGS -->
+    <div class="card">
+      <h2>
+        <span>4. Publishing Log</span>
+        <button class="btn btn-outline btn-small" onclick="clearLogs()">Clear</button>
+      </h2>
+      <table>
+        <thead>
+          <tr><th>Time</th><th>Product</th><th>Board</th><th>Status</th></tr>
+        </thead>
+        <tbody id="logTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DEFAULT_PRODUCTS = [
+    {
+      id: "prod_001",
+      shortName: "boAt Rockerz 113 Bluetooth Neckband",
+      fullName: "boAt Rockerz 113, 40H Battery, Dual Pair, Fast Charge, ENx Tech, Stream Ad Free Music via App Support, Magnetic Buds, Bluetooth Neckband, Wireless with Mic in Ear Earphones (Active Black)",
+      affiliateLink: "https://link.amazon/B01BSk8N1",
+      category: "Electronics / Earphones",
+      board: "Other Seller Zone",
+      bgGradient: ["#0f172a", "#1e293b"],
+      accentColor: "#38bdf8",
+      highlights: ["40 Hours Massive Battery Backup", "ENx Tech for Crystal Clear Calls", "Dual Pairing & Fast Charge", "Magnetic Buds + App Support"],
+      keywords: "#boAtRockerz #BluetoothEarphones #WirelessNeckband #TechFinds #AmazonIndia #ad #affiliate"
+    },
+    {
+      id: "prod_002",
+      shortName: "Qlect Portable USB Smoothie Blender",
+      fullName: "Qlect Portable Blender Electric Juicers Fruit Mixers USB Rechargeable Smoothie Mini Personal Juicer, 6 Blades, 3 Gears, 1500 mAh Rechargeable Battery",
+      affiliateLink: "https://link.amazon/B0hBrrgOn",
+      category: "Kitchen / Small Appliances",
+      board: "Kitchen Organisation",
+      bgGradient: ["#064e3b", "#047857"],
+      accentColor: "#34d399",
+      highlights: ["Powerful 6-Blade Mixing System", "3 Adjustable Speed Gears", "1500 mAh USB Rechargeable", "Portable Fresh Smoothies Anywhere"],
+      keywords: "#KitchenOrganisation #PortableBlender #SmoothieMaker #KitchenHacks #AmazonKitchen #ad #affiliate"
+    },
+    {
+      id: "prod_003",
+      shortName: "DR.RASHEL De-Tan Scrub",
+      fullName: "DR.RASHEL Beauty Elixirs De-Tan Scrub for Glowing Skin - 380ml",
+      affiliateLink: "https://link.amazon/DeTanScrub",
+      category: "Home & Everyday",
+      board: "Other Seller Zone",
+      bgGradient: ["#1e1b4b", "#312e81"],
+      accentColor: "#f43f5e",
+      highlights: ["Brightening Skincare Formula", "Deep Dirt & Impurity Removal", "Gentle Exfoliating Scrub", "Nourishing Botanical Extracts"],
+      keywords: "#SkincareFinds #DeTanScrub #AmazonBeauty #BeautyEssentials #ad #affiliate"
+    }
+  ];
+
+  let PRODUCTS = JSON.parse(localStorage.getItem("cap_products")) || DEFAULT_PRODUCTS;
+  let uploadedImg = null;
+  let currentProduct = PRODUCTS[0];
+
+  function init() {
+    populateSelect(PRODUCTS);
+    loadSelectedProduct();
+    renderLogs();
+  }
+
+  function toggleAddForm() {
+    const form = document.getElementById("addProductForm");
+    const btn = document.getElementById("toggleBtn");
+    const open = form.style.display === "none";
+    form.style.display = open ? "block" : "none";
+    btn.textContent = open ? "Close Form" : "Open Form";
+  }
+
+  function autoSelectBoard() {
+    const cat = document.getElementById("newCategory").value;
+    document.getElementById("newBoard").value = cat.includes("Kitchen") ? "Kitchen Organisation" : "Other Seller Zone";
+  }
+
+  function saveNewProduct() {
+    const shortName = document.getElementById("newShortName").value.trim();
+    const fullName = document.getElementById("newFullName").value.trim() || shortName;
+    const affiliateLink = document.getElementById("newLink").value.trim();
+    const category = document.getElementById("newCategory").value;
+    const board = document.getElementById("newBoard").value;
+    const rawHighlights = document.getElementById("newHighlights").value;
+    let keywords = document.getElementById("newKeywords").value.trim();
+
+    if (!shortName || !affiliateLink) {
+      alert("Please enter both a Short Display Name and your Amazon Affiliate Link.");
+      return;
+    }
+    if (!keywords.toLowerCase().includes("#ad")) {
+      keywords = (keywords + " #ad #affiliate").trim();
+    }
+    const highlights = rawHighlights
+      ? rawHighlights.split(",").map(s => s.trim()).filter(Boolean).slice(0, 4)
+      : ["Top Rated Amazon Pick", "High Quality & Durable Design", "Great Value for Everyday Use", "Fast & Reliable Performance"];
+
+    const isKitchen = board === "Kitchen Organisation";
+    const newProd = {
+      id: "prod_" + String(PRODUCTS.length + 1).padStart(3, "0"),
+      shortName, fullName, affiliateLink, category, board,
+      bgGradient: isKitchen ? ["#064e3b", "#047857"] : ["#1e1b4b", "#312e81"],
+      accentColor: isKitchen ? "#34d399" : "#f43f5e",
+      highlights, keywords
+    };
+
+    PRODUCTS.unshift(newProd);
+    localStorage.setItem("cap_products", JSON.stringify(PRODUCTS));
+    populateSelect(PRODUCTS);
+    document.getElementById("productSelect").value = newProd.id;
+    loadSelectedProduct();
+    recordLog(newProd.shortName, newProd.board, "Added to DB");
+    toggleAddForm();
+    alert("Saved! Your Pro Pin graphic is ready above.");
+  }
+
+  function downloadProductsJSON() {
+    const blob = new Blob([JSON.stringify(PRODUCTS, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "products.json";
+    a.click();
+  }
+
+  function populateSelect(list) {
+    const sel = document.getElementById("productSelect");
+    document.getElementById("prodCount").textContent = PRODUCTS.length;
+    sel.innerHTML = "";
+    list.forEach((p) => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = `${p.shortName} (${p.board})`;
+      sel.appendChild(opt);
+    });
+  }
+
+  function filterProducts() {
+    const q = document.getElementById("searchBox").value.toLowerCase();
+    const filtered = PRODUCTS.filter(p => p.fullName.toLowerCase().includes(q) || p.shortName.toLowerCase().includes(q));
+    populateSelect(filtered.length ? filtered : PRODUCTS);
+    loadSelectedProduct();
+  }
+
+  function loadSelectedProduct() {
+    const selectedId = document.getElementById("productSelect").value;
+    currentProduct = PRODUCTS.find(p => p.id === selectedId) || PRODUCTS[0];
+    uploadedImg = null;
+    document.getElementById("productImageUpload").value = "";
+    document.getElementById("pinBoard").value = currentProduct.board;
+    document.getElementById("pinLink").value = currentProduct.affiliateLink;
+    document.getElementById("pinTitle").value = `${currentProduct.shortName} — Top Features & Review`;
+    document.getElementById("pinDesc").value = `Looking for the ${currentProduct.shortName}? Check out why it stands out:\n✅ ${currentProduct.highlights.join(" • ")}\n\nTap the link to check the latest price on Amazon! ${currentProduct.keywords}`;
+    renderPinCanvas();
+  }
+
+  function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const img = new Image();
+      img.onload = function() { uploadedImg = img; renderPinCanvas(); };
+      img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderPinCanvas() {
+    const canvas = document.getElementById("pinCanvas");
+    const ctx = canvas.getContext("2d");
+    const p = currentProduct;
+
+    // Background Gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, 1500);
+    grad.addColorStop(0, p.bgGradient ? p.bgGradient[0] : "#1e1b4b");
+    grad.addColorStop(1, p.bgGradient ? p.bgGradient[1] : "#312e81");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1000, 1500);
+
+    // Category Pill Badge
+    ctx.fillStyle = p.accentColor || "#f43f5e";
+    ctx.beginPath(); ctx.roundRect(80, 70, 520, 64, 32); ctx.fill();
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 26px sans-serif";
+    ctx.fillText(p.category.toUpperCase(), 110, 111);
+
+    // Product Title
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 58px sans-serif";
+    wrapText(ctx, p.shortName, 80, 225, 840, 72);
+
+    // Product Photo / Showcase Card with Drop Shadow
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 12;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath(); ctx.roundRect(80, 420, 840, 560, 28); ctx.fill();
+    ctx.restore();
+
+    if (uploadedImg) {
+      const scale = Math.min(760 / uploadedImg.width, 500 / uploadedImg.height);
+      const w = uploadedImg.width * scale; const h = uploadedImg.height * scale;
+      ctx.drawImage(uploadedImg, 500 - w / 2, 700 - h / 2, w, h);
+    } else {
+      ctx.fillStyle = "#f3f4f6";
+      ctx.beginPath(); ctx.roundRect(110, 450, 780, 500, 20); ctx.fill();
+      ctx.fillStyle = p.accentColor || "#f43f5e"; ctx.font = "bold 38px sans-serif";
+      ctx.fillText("CURATED AMAZON PICK", 150, 550);
+      ctx.fillStyle = "#4b5563"; ctx.font = "28px sans-serif";
+      ctx.fillText(`Board: ${p.board}`, 150, 610);
+    }
+
+    // Highlights Bullet Points
+    let startY = 1050;
+    ctx.font = "bold 34px sans-serif";
+    p.highlights.forEach((item, idx) => {
+      ctx.fillStyle = p.accentColor || "#f43f5e"; ctx.fillText("✔", 90, startY + idx * 70);
+      ctx.fillStyle = "#ffffff"; ctx.fillText(item.substring(0, 42), 145, startY + idx * 70);
+    });
+
+    // Bottom CTA Button
+    ctx.save();
+    ctx.shadowColor = "rgba(230, 0, 35, 0.4)";
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetY = 8;
+    ctx.fillStyle = "#e60023";
+    ctx.beginPath(); ctx.roundRect(80, 1340, 840, 100, 50); ctx.fill();
+    ctx.restore();
+
+    ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("CHECK LATEST PRICE ON AMAZON →", 500, 1403);
+    ctx.textAlign = "left";
+  }
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(" ");
+    let line = "";
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + " ";
+      if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+        ctx.fillText(line, x, y); line = words[n] + " "; y += lineHeight;
+      } else { line = testLine; }
+    }
+    ctx.fillText(line, x, y);
+  }
+
+  function downloadPinImage() {
+    const canvas = document.getElementById("pinCanvas");
+    const link = document.createElement("a");
+    link.download = `${currentProduct.id}-pro-pin.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    recordLog(currentProduct.shortName, currentProduct.board, "Pro Image Saved");
+  }
+
+  function openPinterestCreator() {
+    navigator.clipboard.writeText(document.getElementById("pinDesc").value);
+    alert("Pin Description copied!\n\nOpening Pinterest... Upload your new Pro Pin image, paste description, and select board: " + currentProduct.board);
+    window.open("https://www.pinterest.com/pin-creation-tool/", "_blank");
+    recordLog(currentProduct.shortName, currentProduct.board, "Opened Pinterest");
+  }
+
+  function exportPinterestCSV() {
+    const title = `"${document.getElementById("pinTitle").value.replace(/"/g, '""')}"`;
+    const desc = `"${document.getElementById("pinDesc").value.replace(/"/g, '""')}"`;
+    const mediaUrl = `"https://rrbrick123.github.io/theclickcatalyst/pins/${currentProduct.id}-pin.png"`;
+    const board = `"${currentProduct.board}"`;
+    const link = `"${currentProduct.affiliateLink}"`;
+    const keywords = `"${currentProduct.category}"`;
+    const csv = "Title,Media URL,Pinterest board,Description,Link,Keywords\n" + `${title},${mediaUrl},${board},${desc},${link},${keywords}\n`;
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    a.download = `pinterest-bulk-${currentProduct.id}.csv`;
+    a.click();
+    recordLog(currentProduct.shortName, currentProduct.board, "CSV Exported");
+  }
+
+  function recordLog(product, board, status) {
+    const logs = JSON.parse(localStorage.getItem("cap_logs") || "[]");
+    logs.unshift({ time: new Date().toLocaleTimeString(), product, board, status });
+    localStorage.setItem("cap_logs", JSON.stringify(logs));
+    renderLogs();
+  }
+
+  function renderLogs() {
+    const logs = JSON.parse(localStorage.getItem("cap_logs") || "[]");
+    document.getElementById("logTableBody").innerHTML = logs.length
+      ? logs.map(l => `<tr><td>${l.time}</td><td>${l.product}</td><td>${l.board}</td><td><b>${l.status}</b></td></tr>`).join("")
+      : `<tr><td colspan="4" style="color:#888;">No activity logged yet.</td></tr>`;
+  }
+
+  function clearLogs() { localStorage.removeItem("cap_logs"); renderLogs(); }
+  init();
+</script>
+</body>
+</html>
